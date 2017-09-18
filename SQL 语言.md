@@ -61,3 +61,61 @@ B'1001' - b大小写均可，只能接01
 X'1FF' - 16进制
 - 可跨行连续
 ```
+
+数字常量：  
+    digits是一个或多个十进制数字（0 到 9）。如果使用了小数点，在小数点前面或后面必须至少有一个数字。如果存在一个指数标记（e），在其后必须跟着至少一个数字。
+```sql
+digits
+digits.[digits][e[+-]digits]
+[digits].digits[e[+-]digits]
+digitse[+-]digits
+- 例如：
+42
+3.5
+4.
+.001
+5e2
+1.925e-3
+- 使用real强转数值类型
+REAL '1.23'  -- string style
+1.23::REAL   -- PostgreSQL (historical) style
+```
+
+类型转换：  
+```sql
+type 'string'
+'string'::type
+CAST ( 'string' AS type )
+
+typename ( 'string' )
+```
+
+操作符：  
+    + - * / < > = ~ ! @ # % ^ & | ` ?
+
+特殊符号：  
+    $ () [] , ; : * .  
+    
+注释：  
+    除'-'外，可以使用C风格注释/* */  
+    
+操作符优先级：  
+```sql
+表 4-2. 操作符优先级（最高到最低）
+
+操作符/元素	                         结合性	        描述
+.	                                   左	       表/列名分隔符
+::	                                   左	       PostgreSQL-风格的类型转换
+[ ]	                                   左	       数组元素选择
++ -	                                   右	       一元加、一元减
+^	                                   左	       指数
+* / %	                                   左	       乘、除、模
++ -	                                   左	       加、减
+（任意其他操作符）	                   左          所有其他本地以及用户定义的操作符
+BETWEEN IN LIKE ILIKE SIMILAR	 	               范围包含，设置成员，字符串匹配
+< > = <= >= <>	 	                               比较操作符
+IS ISNULL NOTNULL	 	                       IS TRUE、IS FALSE、IS NULL、IS DISTINCT FROM等
+NOT	                                   右	       逻辑否定
+AND	                                   左	       逻辑合取
+OR	                                   左	       逻辑析取
+```
