@@ -129,3 +129,58 @@ OR	                                   左	       逻辑析取
 值表达式
 ----  
 
+- 列引用  
+```sql
+correlation.columnname
+```  
+    correlation是一个表（有可能以一个模式名限定）的名字，或者是在FROM子句中为一个表定义的别名。  
+    
+- 位置参数  
+```sql
+$number
+
+CREATE FUNCTION dept(text) RETURNS dept
+    AS $$ SELECT * FROM dept WHERE name = $1 $$
+    LANGUAGE SQL;
+- $1引用函数被调用时第一个函数参数的值。
+```
+
+- 下标  
+```sql
+expression[subscript] - 按秩查询
+
+expression[lower_subscript:upper_subscript] - 查询多个相邻元素（数组切片）
+
+mytable.arraycolumn[4]
+mytable.two_d_column[17][34]
+$1[10:42]
+(arrayfunction(a,b))[42]
+```  
+通常，数组表达式必须被加上括号，但是当要被加下标的表达式只是一个列引用或位置参数时，括号可以被忽略。还有，当原始数组是多维时，多个下标可以被连接起来。  
+- 域选择  
+```sql
+expression.fieldname
+
+mytable.mycolumn
+$1.somecolumn
+(rowfunction(a,b)).col3
+
+- 这里需要圆括号来显示compositecol是一个列名而不是一个表名。
+- 在第二种情况中则是显示mytable是一个表名而不是一个模式名。
+(compositecol).somefield
+(mytable.compositecol).somefield
+
+- 可以通过书写.*来请求一个组合值的所有域。
+(compositecol).*
+```
+
+- 操作符调用  
+```sql
+expression operator expression -（二元中缀操作符）
+operator expression -（一元前缀操作符）
+expression operator -（一元后缀操作符）
+
+OPERATOR(schema.operatorname) - 受限定操作符名
+```
+
+- 函数调用  
