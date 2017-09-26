@@ -184,3 +184,40 @@ OPERATOR(schema.operatorname) - 受限定操作符名
 ```
 
 - 函数调用  
+    一个函数调用的语法是一个函数的名称（可能受限于一个模式名）后面跟上封闭于圆括号中的参数列表：  
+```sql
+function_name ([expression [, expression ... ]] )
+
+sqrt(2)
+```
+
+- 聚集表达式  
+```sql
+aggregate_name (expression [ , ... ] [ order_by_clause ] ) [ FILTER ( WHERE filter_clause ) ]
+aggregate_name (ALL expression [ , ... ] [ order_by_clause ] ) [ FILTER ( WHERE filter_clause ) ]
+aggregate_name (DISTINCT expression [ , ... ] [ order_by_clause ] ) [ FILTER ( WHERE filter_clause ) ]
+aggregate_name ( * ) [ FILTER ( WHERE filter_clause ) ]
+aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause ) [ FILTER ( WHERE filter_clause ) ]
+
+SELECT array_agg(a ORDER BY b DESC) FROM table;
+
+SELECT string_agg(a, ',' ORDER BY a) FROM table;
+
+SELECT string_agg(a ORDER BY a, ',') FROM table;  -- 不正确
+
+SELECT percentile_disc(0.5) WITHIN GROUP (ORDER BY income) FROM households;
+ percentile_disc
+-----------------
+           50489
+           
+SELECT
+    count(*) AS unfiltered,
+    count(*) FILTER (WHERE i < 5) AS filtered
+FROM generate_series(1,10) AS s(i);
+ unfiltered | filtered
+------------+----------
+         10 |        4
+(1 row)
+```
+
+- 窗口函数调用  
