@@ -221,7 +221,6 @@ FROM generate_series(1,10) AS s(i);
 ```
 
 - 窗口函数调用  
-
 ```sql
 function_name ([expression [, expression ... ]]) [ FILTER ( WHERE filter_clause ) ] OVER window_name
 function_name ([expression [, expression ... ]]) [ FILTER ( WHERE filter_clause ) ] OVER ( window_definition )
