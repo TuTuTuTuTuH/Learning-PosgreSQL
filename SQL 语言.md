@@ -221,3 +221,27 @@ FROM generate_series(1,10) AS s(i);
 ```
 
 - 窗口函数调用  
+
+```sql
+function_name ([expression [, expression ... ]]) [ FILTER ( WHERE filter_clause ) ] OVER window_name
+function_name ([expression [, expression ... ]]) [ FILTER ( WHERE filter_clause ) ] OVER ( window_definition )
+function_name ( * ) [ FILTER ( WHERE filter_clause ) ] OVER window_name
+function_name ( * ) [ FILTER ( WHERE filter_clause ) ] OVER ( window_definition )
+
+-- 其中window_definition的语法是
+[ existing_window_name ]
+[ PARTITION BY expression [, ...] ]
+[ ORDER BY expression [ ASC | DESC | USING operator ] [ NULLS { FIRST | LAST } ] [, ...] ]
+[ frame_clause ]
+
+-- 可选的frame_clause是下列之一
+{ RANGE | ROWS } frame_start
+{ RANGE | ROWS } BETWEEN frame_start AND frame_end
+
+-- frame_start和frame_end可以是下面形式中的一种
+UNBOUNDED PRECEDING
+value PRECEDING
+CURRENT ROW
+value FOLLOWING
+UNBOUNDED FOLLOWING
+```
